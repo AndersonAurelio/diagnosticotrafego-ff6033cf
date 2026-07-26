@@ -402,7 +402,10 @@ function OfertaCard({ oferta }: { oferta: Oferta }) {
         {oferta.itens.map((item, i) => (
           <li key={i} className="flex items-start gap-3 text-sm text-foreground">
             <CheckIcon />
-            <span className="leading-relaxed">{item}</span>
+            <span className="leading-relaxed">
+              <span className="font-bold">{item.titulo}</span>
+              {item.descricao && <span> {item.descricao}</span>}
+            </span>
           </li>
         ))}
       </ul>
@@ -416,6 +419,11 @@ function OfertaCard({ oferta }: { oferta: Oferta }) {
         <span className="font-display text-4xl leading-none text-primary sm:text-5xl">
           {oferta.precoDe ? "Por " : ""}
           {oferta.preco}
+          {oferta.precoSufixoInline && (
+            <span className="ml-1 text-2xl text-primary/90 sm:text-3xl">
+              {oferta.precoSufixoInline}
+            </span>
+          )}
         </span>
       </div>
       {oferta.precoSufixo && (
