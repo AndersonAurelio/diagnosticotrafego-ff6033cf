@@ -90,7 +90,7 @@ export function calcularNivel(pontuacao: number): NivelInfo {
     nome: "Rastreado",
     fullName: "Nível 3: Rastreado",
     insight:
-      "Você já mede bem — o próximo salto é deixar a conta mais inteligente devolvendo suas conversões pro algoritmo.",
+      "Você já mede bem. O próximo salto é deixar a conta mais inteligente devolvendo suas conversões pro algoritmo.",
   };
 }
 
@@ -100,6 +100,6 @@ export function linhaPorPerfil(perfil: PerfilKey | ""): string {
   if (perfil === "negocio")
     return "Enquanto isso, seu concorrente que mede sai na frente.";
   if (perfil === "iniciante")
-    return "Comece medindo desde o primeiro real investido — quem mede escala com segurança.";
+    return "Comece medindo desde o primeiro real investido. Quem mede escala com segurança.";
   return "";
 }
