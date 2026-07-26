@@ -27,41 +27,122 @@ export const PERGUNTA_PERFIL = {
 };
 
 type ScoredOption = { label: string; value: string; pts: number };
+type PlainOption = { label: string; value: string };
 
-export const PERGUNTA_RASTREIO = {
-  key: "rastreio" as const,
-  title:
-    "Se eu te perguntar quantos leads seu anúncio gerou ontem, você…",
-  options: [
-    { label: "Sei o número exato, na hora", value: "exato", pts: 3 },
-    { label: "Tenho uma ideia, mas não confio 100%", value: "ideia", pts: 2 },
-    { label: "Dependo do gerenciador ou do comercial pra saber", value: "dependo", pts: 1 },
-    { label: "Não faço ideia", value: "nenhuma", pts: 0 },
-  ] as ScoredOption[],
+type ScoredPergunta = {
+  key: string;
+  title: string;
+  options: ScoredOption[];
 };
 
-export const PERGUNTA_PIXEL = {
-  key: "pixel" as const,
-  title:
-    "Quando um lead vira cliente, essa informação volta pra sua conta de anúncios?",
-  options: [
-    { label: "Sim, automaticamente", value: "auto", pts: 3 },
-    { label: "Só às vezes, no manual", value: "manual", pts: 2 },
-    { label: "Não volta", value: "nao", pts: 1 },
-    { label: "Não sei o que é isso", value: "nao_sei", pts: 0 },
-  ] as ScoredOption[],
+type PlainPergunta = {
+  key: string;
+  title: string;
+  options: PlainOption[];
 };
 
-export const PERGUNTA_INVESTIMENTO = {
-  key: "investimento" as const,
-  title: "Quanto você investe em tráfego por mês, mais ou menos?",
-  options: [
-    { label: "Ainda não invisto", value: "nada" },
-    { label: "Até R$ 3 mil", value: "ate_3k" },
-    { label: "Entre R$ 3 mil e R$ 10 mil", value: "3k_10k" },
-    { label: "Acima de R$ 10 mil", value: "acima_10k" },
-  ],
+export const PERGUNTAS_RASTREIO: Record<PerfilKey, ScoredPergunta> = {
+  negocio: {
+    key: "rastreio",
+    title: "Se eu te perguntar quantos leads seu anúncio gerou ontem, você…",
+    options: [
+      { label: "Sei o número exato, na hora", value: "exato", pts: 3 },
+      { label: "Tenho uma ideia, mas não confio 100%", value: "ideia", pts: 2 },
+      { label: "Dependo do gerenciador ou do comercial pra saber", value: "dependo", pts: 1 },
+      { label: "Não faço ideia", value: "nenhuma", pts: 0 },
+    ],
+  },
+  agencia: {
+    key: "rastreio",
+    title:
+      "Se um cliente seu te perguntar agora quantos leads a campanha dele gerou ontem, você…",
+    options: [
+      { label: "Sei o número exato de cada cliente, na hora", value: "exato", pts: 3 },
+      { label: "Tenho uma ideia, mas não confio 100%", value: "ideia", pts: 2 },
+      { label: "Preciso pedir pro time ou olhar o gerenciador", value: "dependo", pts: 1 },
+      { label: "Não faço ideia", value: "nenhuma", pts: 0 },
+    ],
+  },
+  iniciante: {
+    key: "rastreio",
+    title:
+      "Se você começasse a anunciar amanhã, como saberia quantos leads o anúncio gerou?",
+    options: [
+      { label: "Teria um sistema pronto pra contar cada lead", value: "sistema", pts: 3 },
+      { label: "Olharia o gerenciador de anúncios", value: "gerenciador", pts: 2 },
+      { label: "Perguntaria pra alguém do comercial", value: "comercial", pts: 1 },
+      { label: "Não sei como faria", value: "nao_sei", pts: 0 },
+    ],
+  },
 };
+
+export const PERGUNTAS_PIXEL: Record<PerfilKey, ScoredPergunta> = {
+  negocio: {
+    key: "pixel",
+    title:
+      "Quando um lead vira cliente, essa informação volta pra sua conta de anúncios?",
+    options: [
+      { label: "Sim, automaticamente", value: "auto", pts: 3 },
+      { label: "Só às vezes, no manual", value: "manual", pts: 2 },
+      { label: "Não volta", value: "nao", pts: 1 },
+      { label: "Não sei o que é isso", value: "nao_sei", pts: 0 },
+    ],
+  },
+  agencia: {
+    key: "pixel",
+    title:
+      "Quando um lead vira cliente na operação dos seus clientes, essa conversão volta pro pixel da conta deles?",
+    options: [
+      { label: "Sim, automaticamente em todas as contas", value: "auto", pts: 3 },
+      { label: "Em algumas contas, no manual", value: "manual", pts: 2 },
+      { label: "Não volta em nenhuma", value: "nao", pts: 1 },
+      { label: "Não sei o que é isso", value: "nao_sei", pts: 0 },
+    ],
+  },
+  iniciante: {
+    key: "pixel",
+    title: "Você sabe o que é 'devolver conversões pro pixel/algoritmo'?",
+    options: [
+      { label: "Sim, sei o que é e como funciona", value: "sei", pts: 3 },
+      { label: "Já ouvi falar, mas não sei aplicar", value: "ouvi", pts: 2 },
+      { label: "Não, nunca ouvi", value: "nao", pts: 1 },
+      { label: "Não faço ideia do que é isso", value: "nao_sei", pts: 0 },
+    ],
+  },
+};
+
+export const PERGUNTAS_INVESTIMENTO: Record<PerfilKey, PlainPergunta> = {
+  negocio: {
+    key: "investimento",
+    title: "Quanto você investe em tráfego por mês, mais ou menos?",
+    options: [
+      { label: "Até R$ 3 mil", value: "ate_3k" },
+      { label: "Entre R$ 3 mil e R$ 10 mil", value: "3k_10k" },
+      { label: "Acima de R$ 10 mil", value: "acima_10k" },
+    ],
+  },
+  agencia: {
+    key: "investimento",
+    title: "Em média, quanto cada cliente seu investe em tráfego por mês?",
+    options: [
+      { label: "Até R$ 3 mil por cliente", value: "ate_3k" },
+      { label: "Entre R$ 3 mil e R$ 10 mil por cliente", value: "3k_10k" },
+      { label: "Acima de R$ 10 mil por cliente", value: "acima_10k" },
+      { label: "Varia muito entre clientes", value: "varia" },
+    ],
+  },
+  iniciante: {
+    key: "investimento",
+    title: "Quando você pretende começar a investir em tráfego?",
+    options: [
+      { label: "Já estou pronto pra começar agora", value: "agora" },
+      { label: "Nos próximos 30 dias", value: "30d" },
+      { label: "Nos próximos 3 meses", value: "3m" },
+      { label: "Ainda estou só estudando", value: "estudando" },
+    ],
+  },
+};
+
 
 export type NivelInfo = {
   numero: 1 | 2 | 3;
