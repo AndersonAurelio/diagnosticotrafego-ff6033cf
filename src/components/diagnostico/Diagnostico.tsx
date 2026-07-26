@@ -128,10 +128,8 @@ export function Diagnostico() {
     setStep("resultado");
   }
 
-  const whatsMsg = encodeURIComponent(
-    `Oi Anderson, fiz o diagnóstico e deu ${nivel.fullName}. Quero entender como rastrear meus leads.`,
-  );
-  const whatsHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsMsg}`;
+
+
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
