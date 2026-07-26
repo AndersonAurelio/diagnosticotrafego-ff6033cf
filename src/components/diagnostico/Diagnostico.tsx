@@ -297,35 +297,9 @@ export function Diagnostico() {
                 </p>
               )}
 
-              <a
-                href={whatsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-5 text-base font-bold uppercase tracking-wide text-accent-foreground transition-transform active:scale-[0.98]"
-              >
-                <WhatsIcon />
-                Falar com o Anderson agora
-              </a>
-
-              <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
-                <p className="text-xs uppercase tracking-widest text-primary">
-                  Bônus
-                </p>
-                <h3 className="font-display mt-2 text-xl uppercase text-foreground">
-                  {MATERIAL_TITLE}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {MATERIAL_DESC}
-                </p>
-                <a
-                  href={MATERIAL_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center justify-center rounded-xl border border-primary/60 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-primary hover:bg-primary/10"
-                >
-                  {MATERIAL_LABEL}
-                </a>
-              </div>
+              {answers.perfil && (
+                <OfertaCard oferta={OFERTAS[answers.perfil]} />
+              )}
 
               <p className="mt-10 text-center text-xs text-muted-foreground">
                 Pontuação: {pontuacao}/6
