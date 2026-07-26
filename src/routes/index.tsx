@@ -1,24 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Diagnostico } from "@/components/diagnostico/Diagnostico";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Termômetro do Rastreamento — Diagnóstico de tráfego em 40s" },
+      {
+        name: "description",
+        content:
+          "Mini-diagnóstico rápido: descubra o quanto seu tráfego decide no escuro e receba um plano de ação no WhatsApp.",
+      },
+      {
+        property: "og:title",
+        content: "Termômetro do Rastreamento — Diagnóstico em 40s",
+      },
+      {
+        property: "og:description",
+        content:
+          "Descubra em 40 segundos o quanto você perde por não rastrear seus leads.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return <Diagnostico />;
 }
