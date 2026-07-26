@@ -528,9 +528,10 @@ function OfertaCard({ oferta, perfil }: { oferta: Oferta; perfil: PerfilKey }) {
           <li key={i} className="flex items-start gap-3 text-sm text-foreground">
             <CheckIcon />
             <span className="leading-relaxed">
-              <span className="font-bold">{item.titulo}</span>
+              <span className="font-bold">{item.titulo}:</span>
               {item.descricao && <span> {item.descricao}</span>}
             </span>
+
           </li>
         ))}
       </ul>
@@ -556,6 +557,20 @@ function OfertaCard({ oferta, perfil }: { oferta: Oferta; perfil: PerfilKey }) {
           {oferta.precoSufixo}
         </p>
       )}
+
+      <div className="mt-5 flex flex-col items-center gap-1.5">
+        <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-primary">
+          [ Oferta de lançamento ]
+        </span>
+        <span className="font-mono inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+          </span>
+          Vagas limitadas
+        </span>
+      </div>
+
 
       <a
         href={href}
