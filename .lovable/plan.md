@@ -1,7 +1,7 @@
 # Plano: Remover travessões do projeto
 
 ## Objetivo
-Substituir todos os caracteres de travessão (`—`) por vírgulas (`,`) ou pontos finais (`.`), conforme o contexto, em todos os arquivos do projeto.
+Substituir todos os caracteres de travessão por vírgulas (`,`) ou pontos finais (`.`), conforme o contexto, em todos os arquivos do projeto.
 
 ## Arquivos e substituições identificadas
 
