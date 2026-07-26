@@ -6,12 +6,10 @@ import {
   PERGUNTA_INVESTIMENTO,
   WEBHOOK_URL,
   WHATSAPP_NUMBER,
-  MATERIAL_URL,
-  MATERIAL_LABEL,
-  MATERIAL_TITLE,
-  MATERIAL_DESC,
+  OFERTAS,
   calcularNivel,
   linhaPorPerfil,
+  type Oferta,
   type PerfilKey,
 } from "./data";
 import { formatBRPhone, isValidBRPhone, onlyDigits } from "@/lib/whatsapp-mask";
@@ -130,10 +128,8 @@ export function Diagnostico() {
     setStep("resultado");
   }
 
-  const whatsMsg = encodeURIComponent(
-    `Oi Anderson, fiz o diagnóstico e deu ${nivel.fullName}. Quero entender como rastrear meus leads.`,
-  );
-  const whatsHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsMsg}`;
+
+
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -299,35 +295,9 @@ export function Diagnostico() {
                 </p>
               )}
 
-              <a
-                href={whatsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-5 text-base font-bold uppercase tracking-wide text-accent-foreground transition-transform active:scale-[0.98]"
-              >
-                <WhatsIcon />
-                Falar com o Anderson agora
-              </a>
-
-              <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
-                <p className="text-xs uppercase tracking-widest text-primary">
-                  Bônus
-                </p>
-                <h3 className="font-display mt-2 text-xl uppercase text-foreground">
-                  {MATERIAL_TITLE}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {MATERIAL_DESC}
-                </p>
-                <a
-                  href={MATERIAL_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center justify-center rounded-xl border border-primary/60 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-primary hover:bg-primary/10"
-                >
-                  {MATERIAL_LABEL}
-                </a>
-              </div>
+              {answers.perfil && (
+                <OfertaCard oferta={OFERTAS[answers.perfil]} />
+              )}
 
               <p className="mt-10 text-center text-xs text-muted-foreground">
                 Pontuação: {pontuacao}/6
@@ -415,6 +385,72 @@ function WhatsIcon() {
       aria-hidden
     >
       <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.5 0 .2 5.3.2 11.86c0 2.09.55 4.13 1.6 5.93L0 24l6.4-1.68a11.83 11.83 0 0 0 5.66 1.44h.01c6.56 0 11.86-5.3 11.86-11.86 0-3.17-1.23-6.15-3.41-8.42Zm-8.46 18.24h-.01a9.85 9.85 0 0 1-5.02-1.37l-.36-.21-3.8 1 1.02-3.7-.24-.38a9.86 9.86 0 0 1-1.51-5.24c0-5.45 4.43-9.88 9.88-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.9 6.99c0 5.45-4.44 9.89-9.85 9.89Zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.1 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35Z" />
+    </svg>
+  );
+}
+
+function OfertaCard({ oferta }: { oferta: Oferta }) {
+  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(oferta.whatsMsg)}`;
+  return (
+    <div className="mt-8 rounded-2xl border border-primary/40 bg-white/[0.07] p-6 shadow-[0_0_0_1px_rgba(245,197,24,0.05)]">
+      <h3 className="font-display text-2xl uppercase leading-tight text-primary sm:text-3xl">
+        {oferta.titulo}
+      </h3>
+      <p className="mt-2 text-sm text-muted-foreground">{oferta.subtitulo}</p>
+
+      <ul className="mt-6 space-y-3">
+        {oferta.itens.map((item, i) => (
+          <li key={i} className="flex items-start gap-3 text-sm text-foreground">
+            <CheckIcon />
+            <span className="leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-6 flex items-baseline gap-3">
+        {oferta.precoDe && (
+          <span className="text-base text-muted-foreground line-through">
+            De {oferta.precoDe}
+          </span>
+        )}
+        <span className="font-display text-4xl leading-none text-primary sm:text-5xl">
+          {oferta.precoDe ? "Por " : ""}
+          {oferta.preco}
+        </span>
+      </div>
+      {oferta.precoSufixo && (
+        <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
+          {oferta.precoSufixo}
+        </p>
+      )}
+
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-5 text-base font-bold uppercase tracking-wide text-accent-foreground transition-transform active:scale-[0.98]"
+      >
+        <WhatsIcon />
+        Quero falar com o Anderson
+      </a>
+    </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+      aria-hidden
+    >
+      <polyline points="20 6 9 17 4 12" />
     </svg>
   );
 }
