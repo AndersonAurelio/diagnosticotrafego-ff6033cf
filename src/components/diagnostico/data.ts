@@ -106,3 +106,50 @@ export function linhaPorPerfil(perfil: PerfilKey | ""): string {
     return "Comece medindo desde o primeiro real investido. Quem mede escala com segurança.";
   return "";
 }
+
+export const OFERTAS: Record<PerfilKey, Oferta> = {
+  iniciante: {
+    titulo: "Plano Start",
+    subtitulo:
+      "Pra você que ainda não investe em tráfego e quer começar do jeito certo.",
+    itens: [
+      "Criação de uma campanha de tráfego pronta pra atrair seus primeiros clientes",
+      "Uma aula de 1 hora ensinando a otimizar a campanha",
+      "Acompanhamento durante 15 dias",
+    ],
+    preco: "R$ 397",
+    precoSufixo: "valor único",
+    whatsMsg:
+      "Oi Anderson, fiz o diagnóstico e quero começar com o Plano Start de R$ 397.",
+  },
+  negocio: {
+    titulo: "Gestão Completa",
+    subtitulo: "Pra quem já investe e quer parar de decidir no escuro.",
+    itens: [
+      "Assessoria de Marketing, Comercial, Copy e Criativos. Direcionamento das 4 frentes que definem o resultado: posicionamento, abordagem de vendas, mensagem e peças que convertem.",
+      "Criação e otimização do tráfego pago. Campanhas construídas e ajustadas de forma contínua pra baixar o custo por lead e escalar o que dá certo.",
+      "Rastreamento de leads. Você passa a saber com precisão quantos leads entraram, sem depender do gerenciador nem do comercial.",
+      "Nutrição do pixel. Devolvo pra sua conta quem virou cliente, deixando o algoritmo mais inteligente e o lead mais barato.",
+      "Pipeline automático. Os leads entram organizados e distribuídos sozinhos, sem nenhum lead perdido no caminho.",
+    ],
+    precoDe: "R$ 2.459",
+    preco: "R$ 1.229",
+    whatsMsg:
+      "Oi Anderson, fiz o diagnóstico e quero a Gestão Completa por R$ 1.229.",
+  },
+  agencia: {
+    titulo: "Parceria para Agências",
+    subtitulo:
+      "Terceirize a parte técnica que dá trabalho e entregue mais resultado pros seus clientes.",
+    itens: [
+      "Rastreamento de leads. Cada cliente da sua agência com contagem precisa de leads, sem achismo.",
+      "Nutrição do pixel. Conversões devolvidas pro algoritmo, deixando as contas dos seus clientes mais inteligentes.",
+      "Pipeline automático. Leads organizados e distribuídos automaticamente em cada operação.",
+    ],
+    preco: "R$ 149,90",
+    precoSufixo: "/mês por cliente",
+    whatsMsg:
+      "Oi Anderson, tenho uma agência e quero implementar a parceria de R$ 149,90/mês por cliente.",
+  },
+};
+}
