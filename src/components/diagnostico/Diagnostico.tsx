@@ -388,3 +388,69 @@ function WhatsIcon() {
     </svg>
   );
 }
+
+function OfertaCard({ oferta }: { oferta: Oferta }) {
+  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(oferta.whatsMsg)}`;
+  return (
+    <div className="mt-8 rounded-2xl border border-primary/40 bg-white/[0.07] p-6 shadow-[0_0_0_1px_rgba(245,197,24,0.05)]">
+      <h3 className="font-display text-2xl uppercase leading-tight text-primary sm:text-3xl">
+        {oferta.titulo}
+      </h3>
+      <p className="mt-2 text-sm text-muted-foreground">{oferta.subtitulo}</p>
+
+      <ul className="mt-6 space-y-3">
+        {oferta.itens.map((item, i) => (
+          <li key={i} className="flex items-start gap-3 text-sm text-foreground">
+            <CheckIcon />
+            <span className="leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-6 flex items-baseline gap-3">
+        {oferta.precoDe && (
+          <span className="text-base text-muted-foreground line-through">
+            De {oferta.precoDe}
+          </span>
+        )}
+        <span className="font-display text-4xl leading-none text-primary sm:text-5xl">
+          {oferta.precoDe ? "Por " : ""}
+          {oferta.preco}
+        </span>
+      </div>
+      {oferta.precoSufixo && (
+        <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
+          {oferta.precoSufixo}
+        </p>
+      )}
+
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-5 text-base font-bold uppercase tracking-wide text-accent-foreground transition-transform active:scale-[0.98]"
+      >
+        <WhatsIcon />
+        Quero falar com o Anderson
+      </a>
+    </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+      aria-hidden
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
