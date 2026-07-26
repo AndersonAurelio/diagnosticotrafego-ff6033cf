@@ -419,15 +419,15 @@ function Hero({ onStart }: { onStart: () => void }) {
       <div>
         <Kicker label="MINI-DIAGNOSTICO // 40s" step="READY" />
         <h1 className="font-display mt-8 text-4xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
-          Descubra em 40 segundos o quanto você{" "}
+          Descubra a{" "}
           <span className="relative text-primary">
-            perde por não rastrear
+            maturidade do seu tráfego
             <span
               aria-hidden
               className="absolute inset-x-0 -bottom-1 h-px bg-primary/50"
             />
           </span>{" "}
-          seus leads.
+          e o próximo passo.
         </h1>
         <p className="mt-6 text-base leading-relaxed text-muted-foreground">
           Um diagnóstico rápido do quanto o seu tráfego decide no escuro.
