@@ -6,10 +6,11 @@ export const WHATSAPP_NUMBER = "5563992162796";
 export type Oferta = {
   titulo: string;
   subtitulo: string;
-  itens: string[];
+  itens: Array<{ titulo: string; descricao?: string }>;
   precoDe?: string;
   preco: string;
   precoSufixo?: string;
+  precoSufixoInline?: string;
   whatsMsg: string;
 };
 
@@ -113,9 +114,17 @@ export const OFERTAS: Record<PerfilKey, Oferta> = {
     subtitulo:
       "Pra você que ainda não investe em tráfego e quer começar do jeito certo.",
     itens: [
-      "Criação de uma campanha de tráfego pronta pra atrair seus primeiros clientes",
-      "Uma aula de 1 hora ensinando a otimizar a campanha",
-      "Acompanhamento durante 15 dias",
+      {
+        titulo: "Criação de uma campanha de tráfego",
+        descricao: "pronta pra atrair seus primeiros clientes.",
+      },
+      {
+        titulo: "Uma aula de 1 hora",
+        descricao: "ensinando a otimizar a campanha.",
+      },
+      {
+        titulo: "Acompanhamento durante 15 dias",
+      },
     ],
     preco: "R$ 397",
     precoSufixo: "valor único",
@@ -126,14 +135,35 @@ export const OFERTAS: Record<PerfilKey, Oferta> = {
     titulo: "Gestão Completa",
     subtitulo: "Pra quem já investe e quer parar de decidir no escuro.",
     itens: [
-      "Assessoria de Marketing, Comercial, Copy e Criativos. Direcionamento das 4 frentes que definem o resultado: posicionamento, abordagem de vendas, mensagem e peças que convertem.",
-      "Criação e otimização do tráfego pago. Campanhas construídas e ajustadas de forma contínua pra baixar o custo por lead e escalar o que dá certo.",
-      "Rastreamento de leads. Você passa a saber com precisão quantos leads entraram, sem depender do gerenciador nem do comercial.",
-      "Nutrição do pixel. Devolvo pra sua conta quem virou cliente, deixando o algoritmo mais inteligente e o lead mais barato.",
-      "Pipeline automático. Os leads entram organizados e distribuídos sozinhos, sem nenhum lead perdido no caminho.",
+      {
+        titulo: "Assessoria de Marketing, Comercial, Copy e Criativos",
+        descricao:
+          "Direcionamento das 4 frentes que definem o resultado: posicionamento, abordagem de vendas, mensagem e peças que convertem.",
+      },
+      {
+        titulo: "Criação e otimização do tráfego pago",
+        descricao:
+          "Campanhas construídas e ajustadas de forma contínua pra baixar o custo por lead e escalar o que dá certo.",
+      },
+      {
+        titulo: "Rastreamento de leads",
+        descricao:
+          "Você passa a saber com precisão quantos leads entraram, sem depender do gerenciador nem do comercial.",
+      },
+      {
+        titulo: "Nutrição do pixel",
+        descricao:
+          "Devolvo pra sua conta quem virou cliente, deixando o algoritmo mais inteligente e o lead mais barato.",
+      },
+      {
+        titulo: "Pipeline automático",
+        descricao:
+          "Os leads entram organizados e distribuídos sozinhos, sem nenhum lead perdido no caminho.",
+      },
     ],
     precoDe: "R$ 2.459",
     preco: "R$ 1.229",
+    precoSufixoInline: "/Mês",
     whatsMsg:
       "Oi Anderson, fiz o diagnóstico e quero a Gestão Completa por R$ 1.229.",
   },
@@ -142,9 +172,21 @@ export const OFERTAS: Record<PerfilKey, Oferta> = {
     subtitulo:
       "Terceirize a parte técnica que dá trabalho e entregue mais resultado pros seus clientes.",
     itens: [
-      "Rastreamento de leads. Cada cliente da sua agência com contagem precisa de leads, sem achismo.",
-      "Nutrição do pixel. Conversões devolvidas pro algoritmo, deixando as contas dos seus clientes mais inteligentes.",
-      "Pipeline automático. Leads organizados e distribuídos automaticamente em cada operação.",
+      {
+        titulo: "Rastreamento de leads",
+        descricao:
+          "Cada cliente da sua agência com contagem precisa de leads, sem achismo.",
+      },
+      {
+        titulo: "Nutrição do pixel",
+        descricao:
+          "Conversões devolvidas pro algoritmo, deixando as contas dos seus clientes mais inteligentes.",
+      },
+      {
+        titulo: "Pipeline automático",
+        descricao:
+          "Leads organizados e distribuídos automaticamente em cada operação.",
+      },
     ],
     preco: "R$ 149,90",
     precoSufixo: "/mês por cliente",
