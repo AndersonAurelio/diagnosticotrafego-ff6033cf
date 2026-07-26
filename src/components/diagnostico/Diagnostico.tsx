@@ -528,9 +528,10 @@ function OfertaCard({ oferta, perfil }: { oferta: Oferta; perfil: PerfilKey }) {
           <li key={i} className="flex items-start gap-3 text-sm text-foreground">
             <CheckIcon />
             <span className="leading-relaxed">
-              <span className="font-bold">{item.titulo}</span>
+              <span className="font-bold">{item.titulo}:</span>
               {item.descricao && <span> {item.descricao}</span>}
             </span>
+
           </li>
         ))}
       </ul>
