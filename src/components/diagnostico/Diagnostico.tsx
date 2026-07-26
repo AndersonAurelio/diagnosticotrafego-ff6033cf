@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
   PERGUNTA_PERFIL,
-  PERGUNTA_RASTREIO,
-  PERGUNTA_PIXEL,
-  PERGUNTA_INVESTIMENTO,
+  PERGUNTAS_RASTREIO,
+  PERGUNTAS_PIXEL,
+  PERGUNTAS_INVESTIMENTO,
   WEBHOOK_URL,
   WHATSAPP_NUMBER,
   OFERTAS,
@@ -12,6 +12,7 @@ import {
   type Oferta,
   type PerfilKey,
 } from "./data";
+
 import { formatBRPhone, isValidBRPhone, onlyDigits } from "@/lib/whatsapp-mask";
 
 type Step = "hero" | "q1" | "q2" | "q3" | "q4" | "captura" | "resultado";
