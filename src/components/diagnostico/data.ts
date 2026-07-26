@@ -3,12 +3,15 @@ export const WEBHOOK_URL =
 
 export const WHATSAPP_NUMBER = "5563992162796";
 
-// ⚠️ TROQUE ESTE LINK PELO MATERIAL/ISCA REAL (checklist, planilha, PDF, etc.)
-export const MATERIAL_URL = "#";
-export const MATERIAL_LABEL = "Baixar material";
-export const MATERIAL_TITLE = "Seu material de bônus";
-export const MATERIAL_DESC =
-  "Um recurso rápido pra você começar a rastrear seus leads ainda hoje.";
+export type Oferta = {
+  titulo: string;
+  subtitulo: string;
+  itens: string[];
+  precoDe?: string;
+  preco: string;
+  precoSufixo?: string;
+  whatsMsg: string;
+};
 
 export type PerfilKey = "negocio" | "agencia" | "iniciante";
 
