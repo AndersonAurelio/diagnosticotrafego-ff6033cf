@@ -6,15 +6,15 @@ Substituir todos os caracteres de travessão (`—`) por vírgulas (`,`) ou pont
 ## Arquivos e substituições identificadas
 
 1. **src/routes/index.tsx**
-   - Meta `title`: `"Termômetro do Rastreamento — Diagnóstico de tráfego em 40s"` → `"Termômetro do Rastreamento. Diagnóstico de tráfego em 40s"`
-   - Meta `og:title`: `"Termômetro do Rastreamento — Diagnóstico em 40s"` → `"Termômetro do Rastreamento. Diagnóstico em 40s"`
+   - Meta `title`: `"Termômetro do Rastreamento. Diagnóstico de tráfego em 40s"` → `"Termômetro do Rastreamento. Diagnóstico de tráfego em 40s"`
+   - Meta `og:title`: `"Termômetro do Rastreamento. Diagnóstico em 40s"` → `"Termômetro do Rastreamento. Diagnóstico em 40s"`
 
 2. **src/components/diagnostico/data.ts**
-   - Insight do Nível 3: `"Você já mede bem — o próximo salto..."` → `"Você já mede bem. O próximo salto..."`
-   - Linha do perfil iniciante: `"...primeiro real investido — quem mede escala com segurança."` → `"...primeiro real investido. Quem mede escala com segurança."`
+   - Insight do Nível 3: `"Você já mede bem. O próximo salto..."` → `"Você já mede bem. O próximo salto..."`
+   - Linha do perfil iniciante: `"...primeiro real investido. Quem mede escala com segurança."` → `"...primeiro real investido. Quem mede escala com segurança."`
 
 3. **src/styles.css**
-   - Comentário: `/* Dark by default — "de tráfego pago" */` → `/* Dark by default. "de tráfego pago" */`
+   - Comentário: `/* Dark by default. "de tráfego pago" */` → `/* Dark by default. "de tráfego pago" */`
 
 4. **src/lib/error-capture.ts**
    - Comentários técnicos: substituir travessões por ponto final ou vírgula, conforme fluidez.
