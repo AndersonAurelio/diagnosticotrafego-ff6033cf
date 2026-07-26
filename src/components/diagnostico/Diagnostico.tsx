@@ -6,12 +6,10 @@ import {
   PERGUNTA_INVESTIMENTO,
   WEBHOOK_URL,
   WHATSAPP_NUMBER,
-  MATERIAL_URL,
-  MATERIAL_LABEL,
-  MATERIAL_TITLE,
-  MATERIAL_DESC,
+  OFERTAS,
   calcularNivel,
   linhaPorPerfil,
+  type Oferta,
   type PerfilKey,
 } from "./data";
 import { formatBRPhone, isValidBRPhone, onlyDigits } from "@/lib/whatsapp-mask";
