@@ -37,6 +37,25 @@ const initialAnswers: Answers = {
   investimento: "",
 };
 
+const STEP_KICKERS: Record<Exclude<Step, "hero">, string> = {
+  q1: "PERFIL",
+  q2: "RASTREIO",
+  q3: "PIXEL",
+  q4: "INVESTIMENTO",
+  captura: "CONTATO",
+  resultado: "RESULT",
+};
+
+const PLANO_LABEL: Record<PerfilKey, string> = {
+  iniciante: "START",
+  negocio: "GESTAO",
+  agencia: "AGENCIA",
+};
+
+function pad2(n: number) {
+  return n.toString().padStart(2, "0");
+}
+
 export function Diagnostico() {
   const [step, setStep] = useState<Step>("hero");
   const [answers, setAnswers] = useState<Answers>(initialAnswers);
@@ -68,7 +87,11 @@ export function Diagnostico() {
   const showProgress = questionIndex >= 0;
   const progressPct = showProgress
     ? ((questionIndex + 1) / QUESTION_STEPS.length) * 100
-    : 0;
+    : step === "captura"
+      ? 100
+      : step === "resultado"
+        ? 100
+        : 0;
 
   const pontuacao = answers.rastreioPts + answers.pixelPts;
   const nivel = calcularNivel(pontuacao);
@@ -129,48 +152,44 @@ export function Diagnostico() {
     setStep("resultado");
   }
 
+  const stepLabel =
+    step === "hero"
+      ? "READY"
+      : step === "captura"
+        ? "05 / 05"
+        : step === "resultado"
+          ? "DONE"
+          : `${pad2(questionIndex + 1)} / 04`;
 
-
+  const kickerLabel =
+    step === "hero" ? "MINI-DIAGNOSTICO // 40s" : STEP_KICKERS[step];
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-      {/* Brilho amarelo no canto inferior */}
+      {/* Grid blueprint */}
+      <div aria-hidden className="tech-grid pointer-events-none fixed inset-0" />
+
+      {/* Halo indigo inferior */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-x-0 bottom-0 h-[60vh] opacity-60"
+        className="pointer-events-none fixed inset-x-0 bottom-0 h-[55vh]"
         style={{
           background:
-            "radial-gradient(ellipse at 80% 100%, rgba(245,197,24,0.22), transparent 60%)",
+            "radial-gradient(ellipse at 50% 100%, rgba(79,70,229,0.22), transparent 65%)",
         }}
       />
 
-      {/* Barra de progresso */}
-      {showProgress && (
-        <div className="fixed inset-x-0 top-0 z-20 h-1.5 bg-white/5">
-          <div
-            className="h-full bg-primary transition-[width] duration-500 ease-out"
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-      )}
+      {/* HUD superior */}
+      <HUD progressPct={progressPct} stepLabel={stepLabel} />
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-xl flex-col px-5 pb-10 pt-8">
-        <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-widest text-muted-foreground">
-          <span className="font-display text-sm text-primary">Termômetro</span>
-          {showProgress && (
-            <span>
-              {questionIndex + 1}/{QUESTION_STEPS.length}
-            </span>
-          )}
-        </div>
-
+      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-xl flex-col px-5 pb-16 pt-24">
         <div key={step} className="flex-1 animate-in fade-in duration-300">
-          {step === "hero" && (
-            <Hero onStart={() => setStep("q1")} />
-          )}
+          {step === "hero" && <Hero onStart={() => setStep("q1")} />}
 
           {step === "q1" && (
             <Question
+              kicker={kickerLabel}
+              stepLabel={stepLabel}
               title={PERGUNTA_PERFIL.title}
               options={PERGUNTA_PERFIL.options.map((o) => ({
                 label: o.label,
@@ -181,6 +200,8 @@ export function Diagnostico() {
 
           {step === "q2" && answers.perfil && (
             <Question
+              kicker={kickerLabel}
+              stepLabel={stepLabel}
               title={PERGUNTAS_RASTREIO[answers.perfil].title}
               options={PERGUNTAS_RASTREIO[answers.perfil].options.map((o) => ({
                 label: o.label,
@@ -191,6 +212,8 @@ export function Diagnostico() {
 
           {step === "q3" && answers.perfil && (
             <Question
+              kicker={kickerLabel}
+              stepLabel={stepLabel}
               title={PERGUNTAS_PIXEL[answers.perfil].title}
               options={PERGUNTAS_PIXEL[answers.perfil].options.map((o) => ({
                 label: o.label,
@@ -201,6 +224,8 @@ export function Diagnostico() {
 
           {step === "q4" && answers.perfil && (
             <Question
+              kicker={kickerLabel}
+              stepLabel={stepLabel}
               title={PERGUNTAS_INVESTIMENTO[answers.perfil].title}
               options={PERGUNTAS_INVESTIMENTO[answers.perfil].options.map((o) => ({
                 label: o.label,
@@ -209,27 +234,27 @@ export function Diagnostico() {
             />
           )}
 
-
           {step === "captura" && (
-            <form onSubmit={handleSubmitCaptura} className="pt-4">
-              <p className="text-base text-muted-foreground">
-                Pronto! Seu diagnóstico está calculado.
-              </p>
-              <h2 className="font-display mt-2 text-3xl uppercase leading-tight text-foreground sm:text-4xl">
+            <form onSubmit={handleSubmitCaptura} className="pt-2">
+              <Kicker label={kickerLabel} step={stepLabel} />
+              <h2 className="font-display mt-4 text-3xl font-extrabold leading-tight text-foreground sm:text-4xl">
                 Pra onde eu envio o resultado completo + o material?
               </h2>
+              <p className="mt-3 text-base text-muted-foreground">
+                Seu diagnóstico já está calculado.
+              </p>
 
-              <div className="mt-8 space-y-4">
+              <div className="mt-8 space-y-5">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-foreground">
-                    Seu nome
+                  <label className="font-mono mb-2 block text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                    &gt; nome
                   </label>
                   <input
                     type="text"
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                     placeholder="Como posso te chamar?"
-                    className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                    className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                     autoComplete="name"
                   />
                   {touched && !nomeValido && (
@@ -240,8 +265,8 @@ export function Diagnostico() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-foreground">
-                    Seu melhor WhatsApp
+                  <label className="font-mono mb-2 block text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                    &gt; whatsapp
                   </label>
                   <input
                     type="tel"
@@ -249,7 +274,7 @@ export function Diagnostico() {
                     value={whatsapp}
                     onChange={(e) => setWhatsapp(formatBRPhone(e.target.value))}
                     placeholder="(00) 00000-0000"
-                    className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                    className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                     autoComplete="tel"
                   />
                   {touched && !whatsValido && (
@@ -263,28 +288,59 @@ export function Diagnostico() {
               <button
                 type="submit"
                 disabled={!formValido && touched}
-                className="mt-8 w-full rounded-2xl bg-primary px-6 py-5 text-base font-bold uppercase tracking-wide text-primary-foreground transition-transform active:scale-[0.98] disabled:opacity-60"
+                className="glow-primary mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-5 text-base font-semibold tracking-wide text-primary-foreground transition-transform active:scale-[0.98] disabled:opacity-60"
               >
                 Ver meu resultado
+                <span className="font-mono opacity-80">→</span>
               </button>
-              <p className="mt-4 text-center text-xs text-muted-foreground">
-                Sem spam. Só o resultado + o material.
+              <p className="font-mono mt-4 text-center text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                sem spam · só o resultado + material
               </p>
             </form>
           )}
 
           {step === "resultado" && (
             <div className="pt-2">
-              <p className="text-sm uppercase tracking-widest text-muted-foreground">
-                {nome ? `${nome.split(" ")[0]}, seu nível é` : "Seu nível é"}
-              </p>
-              <div className="mt-2 flex items-baseline gap-3">
-                <span className="font-display text-7xl leading-none text-primary sm:text-8xl">
-                  {nivel.numero}
-                </span>
-                <span className="font-display text-2xl uppercase leading-tight text-primary sm:text-3xl">
-                  {nivel.nome}
-                </span>
+              <Kicker
+                label={`RESULT${nome ? ` // ${nome.split(" ")[0].toUpperCase()}` : ""}`}
+                step="DONE"
+              />
+
+              {/* Score card HUD */}
+              <div className="mt-6 rounded-2xl border border-primary/30 bg-white/[0.03] p-6 glow-soft">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                      LEVEL {pad2(nivel.numero)}
+                    </p>
+                    <p className="font-display mt-2 text-3xl font-extrabold leading-tight text-primary sm:text-4xl">
+                      {nivel.nome}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                      SCORE
+                    </p>
+                    <p className="font-mono mt-2 text-3xl font-semibold text-foreground">
+                      {pontuacao}
+                      <span className="text-muted-foreground">/6</span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Segmented bar */}
+                <div className="mt-5 flex gap-1.5">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={
+                        i < pontuacao
+                          ? "h-2 flex-1 rounded-sm bg-primary shadow-[0_0_12px_rgba(79,70,229,0.7)]"
+                          : "h-2 flex-1 rounded-sm bg-white/5"
+                      }
+                    />
+                  ))}
+                </div>
               </div>
 
               <p className="mt-6 text-lg leading-relaxed text-foreground">
@@ -298,12 +354,8 @@ export function Diagnostico() {
               )}
 
               {answers.perfil && (
-                <OfertaCard oferta={OFERTAS[answers.perfil]} />
+                <OfertaCard oferta={OFERTAS[answers.perfil]} perfil={answers.perfil} />
               )}
-
-              <p className="mt-10 text-center text-xs text-muted-foreground">
-                Pontuação: {pontuacao}/6
-              </p>
             </div>
           )}
         </div>
@@ -312,17 +364,70 @@ export function Diagnostico() {
   );
 }
 
+function HUD({
+  progressPct,
+  stepLabel,
+}: {
+  progressPct: number;
+  stepLabel: string;
+}) {
+  return (
+    <div className="fixed inset-x-0 top-0 z-30 border-b border-white/5 bg-background/70 backdrop-blur-md">
+      <div className="mx-auto flex w-full max-w-xl items-center gap-4 px-5 py-3">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            TERMOMETRO<span className="text-white/30"> / v1.0</span>
+          </span>
+        </div>
+
+        <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-white/5">
+          <div
+            className="h-full bg-primary shadow-[0_0_12px_rgba(79,70,229,0.9)] transition-[width] duration-500 ease-out"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+
+        <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-primary">
+          {stepLabel}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function Kicker({ label, step }: { label: string; step: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
+        [ {step} ]
+      </span>
+      <span className="h-px flex-1 bg-white/10" />
+      <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 function Hero({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex min-h-[80vh] flex-col justify-between pt-6">
+    <div className="flex min-h-[75vh] flex-col justify-between pt-4">
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-primary">
-          Mini-diagnóstico · 40 segundos
-        </p>
-        <h1 className="font-display mt-6 text-4xl uppercase leading-[1.05] text-foreground sm:text-5xl">
+        <Kicker label="MINI-DIAGNOSTICO // 40s" step="READY" />
+        <h1 className="font-display mt-8 text-4xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
           Descubra em 40 segundos o quanto você{" "}
-          <span className="text-primary">perde por não rastrear</span> seus
-          leads
+          <span className="relative text-primary">
+            perde por não rastrear
+            <span
+              aria-hidden
+              className="absolute inset-x-0 -bottom-1 h-px bg-primary/50"
+            />
+          </span>{" "}
+          seus leads.
         </h1>
         <p className="mt-6 text-base leading-relaxed text-muted-foreground">
           Um diagnóstico rápido do quanto o seu tráfego decide no escuro.
@@ -332,12 +437,15 @@ function Hero({ onStart }: { onStart: () => void }) {
       <div className="mt-10">
         <button
           onClick={onStart}
-          className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-bold uppercase tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
+          className="glow-primary group flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-5 text-base font-semibold tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
         >
           Começar o diagnóstico
+          <span className="font-mono transition-transform group-hover:translate-x-1">
+            →
+          </span>
         </button>
-        <p className="mt-4 text-center text-xs text-muted-foreground">
-          4 perguntas. Sem cadastro pra começar.
+        <p className="font-mono mt-4 text-center text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+          4 perguntas · sem cadastro pra começar
         </p>
       </div>
     </div>
@@ -345,15 +453,20 @@ function Hero({ onStart }: { onStart: () => void }) {
 }
 
 function Question({
+  kicker,
+  stepLabel,
   title,
   options,
 }: {
+  kicker: string;
+  stepLabel: string;
   title: string;
   options: { label: string; onClick: () => void }[];
 }) {
   return (
-    <div className="pt-4">
-      <h2 className="font-display text-3xl uppercase leading-tight text-foreground sm:text-4xl">
+    <div className="pt-2">
+      <Kicker label={kicker} step={stepLabel} />
+      <h2 className="font-display mt-5 text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-4xl">
         {title}
       </h2>
       <div className="mt-8 space-y-3">
@@ -361,12 +474,15 @@ function Question({
           <button
             key={i}
             onClick={opt.onClick}
-            className="group flex w-full items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-5 text-left text-base text-foreground transition-all hover:border-primary hover:bg-primary/5 active:scale-[0.99]"
+            className="group flex w-full items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-5 text-left text-base text-foreground transition-all hover:border-primary/60 hover:bg-primary/[0.06] hover:shadow-[inset_0_0_0_1px_rgba(79,70,229,0.25)] active:scale-[0.99]"
           >
-            <span>{opt.label}</span>
+            <span className="font-mono text-xs text-muted-foreground transition-colors group-hover:text-primary">
+              {pad2(i + 1)}
+            </span>
+            <span className="flex-1 leading-snug">{opt.label}</span>
             <span
               aria-hidden
-              className="text-primary opacity-60 transition-opacity group-hover:opacity-100"
+              className="font-mono text-primary opacity-40 transition-all group-hover:translate-x-0.5 group-hover:opacity-100"
             >
               →
             </span>
@@ -391,11 +507,18 @@ function WhatsIcon() {
   );
 }
 
-function OfertaCard({ oferta }: { oferta: Oferta }) {
+function OfertaCard({ oferta, perfil }: { oferta: Oferta; perfil: PerfilKey }) {
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(oferta.whatsMsg)}`;
   return (
-    <div className="mt-8 rounded-2xl border border-primary/40 bg-white/[0.07] p-6 shadow-[0_0_0_1px_rgba(245,197,24,0.05)]">
-      <h3 className="font-display text-2xl uppercase leading-tight text-primary sm:text-3xl">
+    <div className="glow-soft mt-8 rounded-2xl border border-primary/40 bg-card p-6">
+      <div className="flex items-center gap-3">
+        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-primary">
+          [ PLANO // {PLANO_LABEL[perfil]} ]
+        </span>
+        <span className="h-px flex-1 bg-primary/20" />
+      </div>
+
+      <h3 className="font-display mt-4 text-2xl font-extrabold leading-tight tracking-tight text-foreground sm:text-3xl">
         {oferta.titulo}
       </h3>
       <p className="mt-2 text-sm text-muted-foreground">{oferta.subtitulo}</p>
@@ -414,22 +537,22 @@ function OfertaCard({ oferta }: { oferta: Oferta }) {
 
       <div className="mt-6 flex items-baseline gap-3">
         {oferta.precoDe && (
-          <span className="text-base text-muted-foreground line-through">
+          <span className="font-mono text-sm text-muted-foreground line-through">
             De {oferta.precoDe}
           </span>
         )}
-        <span className="font-display text-4xl leading-none text-primary sm:text-5xl">
+        <span className="font-display text-4xl font-extrabold leading-none text-primary sm:text-5xl">
           {oferta.precoDe ? "Por " : ""}
           {oferta.preco}
           {oferta.precoSufixoInline && (
-            <span className="ml-1 text-2xl text-primary/90 sm:text-3xl">
+            <span className="font-mono ml-1 text-xl font-semibold text-primary/90 sm:text-2xl">
               {oferta.precoSufixoInline}
             </span>
           )}
         </span>
       </div>
       {oferta.precoSufixo && (
-        <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
+        <p className="font-mono mt-1 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
           {oferta.precoSufixo}
         </p>
       )}
@@ -438,7 +561,7 @@ function OfertaCard({ oferta }: { oferta: Oferta }) {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-5 text-base font-bold uppercase tracking-wide text-accent-foreground transition-transform active:scale-[0.98]"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-5 text-base font-semibold tracking-wide text-accent-foreground transition-all hover:shadow-[0_0_28px_-6px_rgba(37,211,102,0.7)] active:scale-[0.98]"
       >
         <WhatsIcon />
         Quero falar com o Anderson
@@ -457,7 +580,7 @@ function CheckIcon() {
       strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+      className="mt-0.5 h-5 w-5 shrink-0 text-primary drop-shadow-[0_0_6px_rgba(79,70,229,0.7)]"
       aria-hidden
     >
       <polyline points="20 6 9 17 4 12" />
