@@ -1,33 +1,61 @@
-# Ajuste no card de oferta: preço mensal e títulos em negrito
-
 ## Objetivo
-Atualizar a exibição dos cards de oferta na tela `resultado` para:
-1. Mostrar o preço do plano **Gestão Completa** como "Por R$ 1.229/Mês", com o "/Mês" em destaque menor ao lado do valor.
-2. Exibir o **título de cada serviço em negrito** em todos os cards de oferta (Start, Gestão Completa e Parceria para Agências).
 
-## Alterações
+Fazer as perguntas 2 (rastreio), 3 (pixel) e 4 (investimento) mudarem de texto conforme o perfil escolhido na pergunta 1, mantendo a mesma lógica de pontuação e o mesmo score final (0-6).
 
-### 1. `src/components/diagnostico/data.ts`
-- Alterar o tipo `Oferta.itens` de `string[]` para `Array<{ titulo: string; descricao?: string }>`.
-- Refatorar todos os itens das ofertas `iniciante`, `negocio` e `agencia` para separar o título (negrito) da descrição.
-  - Exemplo para Gestão Completa:
-    - Título: "Assessoria de Marketing, Comercial, Copy e Criativos"
-    - Descrição: "Direcionamento das 4 frentes que definem o resultado: posicionamento, abordagem de vendas, mensagem e peças que convertem."
-- Adicionar campo opcional `precoSufixoInline?: string` ao tipo `Oferta`.
-- No plano `negocio`, definir `precoSufixoInline: "/Mês"`.
+## Perguntas por perfil
 
-### 2. `src/components/diagnostico/Diagnostico.tsx`
-- No componente `OfertaCard`:
-  - Renderizar cada item da lista com o `titulo` em negrito e a `descricao` (quando existir) no mesmo parágrafo, mantendo o ícone de check amarelo.
-  - Ajustar o bloco de preço para exibir o `precoSufixoInline` em tamanho menor ao lado do valor principal quando presente.
-  - Exemplo: "Por R$ 1.229" (grande) + "/Mês" (menor, mesma cor primária).
+**Iniciante** (ainda não invisto)
+- P2 Rastreio → "Se você começasse a anunciar amanhã, como saberia quantos leads o anúncio gerou?"
+  - Teria um sistema pronto pra contar cada lead (3)
+  - Olharia o gerenciador de anúncios (2)
+  - Perguntaria pra alguém do comercial (1)
+  - Não sei como faria (0)
+- P3 Pixel → "Você sabe o que é 'devolver conversões pro pixel/algoritmo'?"
+  - Sim, sei o que é e como funciona (3)
+  - Já ouvi falar, mas não sei aplicar (2)
+  - Não, nunca ouvi (1)
+  - Não faço ideia do que é isso (0)
+- P4 Intenção (substitui investimento) → "Quando você pretende começar a investir em tráfego?"
+  - Já estou pronto pra começar agora
+  - Nos próximos 30 dias
+  - Nos próximos 3 meses
+  - Ainda estou só estudando
+  - (sem pontuação, só qualificação)
+
+**Negócio** (mantém as atuais, sem mudança de texto)
+- P2, P3, P4 permanecem exatamente como estão hoje.
+
+**Agência** (perguntas por cliente)
+- P2 Rastreio → "Se um cliente seu te perguntar agora quantos leads a campanha dele gerou ontem, você…"
+  - Sei o número exato de cada cliente, na hora (3)
+  - Tenho uma ideia, mas não confio 100% (2)
+  - Preciso pedir pro time ou olhar o gerenciador (1)
+  - Não faço ideia (0)
+- P3 Pixel → "Quando um lead vira cliente na operação dos seus clientes, essa conversão volta pro pixel da conta deles?"
+  - Sim, automaticamente em todas as contas (3)
+  - Em algumas contas, no manual (2)
+  - Não volta em nenhuma (1)
+  - Não sei o que é isso (0)
+- P4 Investimento → "Em média, quanto cada cliente seu investe em tráfego por mês?"
+  - Até R$ 3 mil por cliente
+  - Entre R$ 3 mil e R$ 10 mil por cliente
+  - Acima de R$ 10 mil por cliente
+  - Varia muito entre clientes
+
+## Implementação
+
+Em `src/components/diagnostico/data.ts`:
+- Substituir `PERGUNTA_RASTREIO`, `PERGUNTA_PIXEL`, `PERGUNTA_INVESTIMENTO` por mapas indexados por `PerfilKey`:
+  - `PERGUNTAS_RASTREIO: Record<PerfilKey, {...}>`
+  - `PERGUNTAS_PIXEL: Record<PerfilKey, {...}>`
+  - `PERGUNTAS_INVESTIMENTO: Record<PerfilKey, {...}>` (para iniciante, vira pergunta de intenção sem `pts`)
+- Manter a mesma `key` (`rastreio`, `pixel`, `investimento`) em cada variante pra o payload do webhook continuar consistente.
+
+Em `src/components/diagnostico/Diagnostico.tsx`:
+- Nas telas q2/q3/q4, ler a pergunta a partir do perfil já selecionado (`answers.perfil`) e renderizar a variante correspondente.
+- Para iniciante, a pergunta 4 (intenção) não soma pontos; o cálculo do score continua usando só P2+P3 (mantém range 0-6).
+- Nenhuma mudança nas ofertas, no bloco de resultado, no webhook ou no captura de lead.
 
 ## Fora de escopo
-- Nenhuma mudança no fluxo de perguntas, cálculo de nível, webhook, captura de leads ou roteamento.
-- Nenhuma mudança no botão principal de WhatsApp do card.
 
-## Validação
-- Build local (`bun run build`) deve passar sem erros.
-- Verificar visualmente no preview que:
-  - O card de "Gestão Completa" exibe "Por R$ 1.229/Mês" com "/Mês" menor.
-  - Todos os cards exibem o título de cada serviço em negrito.
+- Não mexe em textos das ofertas, resultado, hero, captura, nem no cálculo dos níveis.
