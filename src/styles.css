@@ -38,7 +38,7 @@
 
 :root {
   --radius: 1rem;
-  /* Dark by default — "de tráfego pago" */
+  /* Dark by default. "de tráfego pago" */
   --background: oklch(0.16 0.01 280);
   --foreground: oklch(0.97 0.005 260);
   --card: oklch(0.2 0.01 280);

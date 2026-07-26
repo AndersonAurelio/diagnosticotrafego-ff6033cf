@@ -4,7 +4,7 @@ import { Diagnostico } from "@/components/diagnostico/Diagnostico";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Termômetro do Rastreamento — Diagnóstico de tráfego em 40s" },
+      { title: "Termômetro do Rastreamento. Diagnóstico de tráfego em 40s" },
       {
         name: "description",
         content:
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "Termômetro do Rastreamento — Diagnóstico em 40s",
+        content: "Termômetro do Rastreamento. Diagnóstico em 40s",
       },
       {
         property: "og:description",
