@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
   PERGUNTA_PERFIL,
-  PERGUNTA_RASTREIO,
-  PERGUNTA_PIXEL,
-  PERGUNTA_INVESTIMENTO,
+  PERGUNTAS_RASTREIO,
+  PERGUNTAS_PIXEL,
+  PERGUNTAS_INVESTIMENTO,
   WEBHOOK_URL,
   WHATSAPP_NUMBER,
   OFERTAS,
@@ -12,6 +12,7 @@ import {
   type Oferta,
   type PerfilKey,
 } from "./data";
+
 import { formatBRPhone, isValidBRPhone, onlyDigits } from "@/lib/whatsapp-mask";
 
 type Step = "hero" | "q1" | "q2" | "q3" | "q4" | "captura" | "resultado";
@@ -178,35 +179,36 @@ export function Diagnostico() {
             />
           )}
 
-          {step === "q2" && (
+          {step === "q2" && answers.perfil && (
             <Question
-              title={PERGUNTA_RASTREIO.title}
-              options={PERGUNTA_RASTREIO.options.map((o) => ({
+              title={PERGUNTAS_RASTREIO[answers.perfil].title}
+              options={PERGUNTAS_RASTREIO[answers.perfil].options.map((o) => ({
                 label: o.label,
                 onClick: () => handleAnswerRastreio(o.value, o.pts),
               }))}
             />
           )}
 
-          {step === "q3" && (
+          {step === "q3" && answers.perfil && (
             <Question
-              title={PERGUNTA_PIXEL.title}
-              options={PERGUNTA_PIXEL.options.map((o) => ({
+              title={PERGUNTAS_PIXEL[answers.perfil].title}
+              options={PERGUNTAS_PIXEL[answers.perfil].options.map((o) => ({
                 label: o.label,
                 onClick: () => handleAnswerPixel(o.value, o.pts),
               }))}
             />
           )}
 
-          {step === "q4" && (
+          {step === "q4" && answers.perfil && (
             <Question
-              title={PERGUNTA_INVESTIMENTO.title}
-              options={PERGUNTA_INVESTIMENTO.options.map((o) => ({
+              title={PERGUNTAS_INVESTIMENTO[answers.perfil].title}
+              options={PERGUNTAS_INVESTIMENTO[answers.perfil].options.map((o) => ({
                 label: o.label,
                 onClick: () => handleAnswerInvestimento(o.value),
               }))}
             />
           )}
+
 
           {step === "captura" && (
             <form onSubmit={handleSubmitCaptura} className="pt-4">
