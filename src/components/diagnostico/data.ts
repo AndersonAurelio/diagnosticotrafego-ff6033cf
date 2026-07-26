@@ -6,10 +6,11 @@ export const WHATSAPP_NUMBER = "5563992162796";
 export type Oferta = {
   titulo: string;
   subtitulo: string;
-  itens: string[];
+  itens: Array<{ titulo: string; descricao?: string }>;
   precoDe?: string;
   preco: string;
   precoSufixo?: string;
+  precoSufixoInline?: string;
   whatsMsg: string;
 };
 
