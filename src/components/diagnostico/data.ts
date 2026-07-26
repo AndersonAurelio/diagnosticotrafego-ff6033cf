@@ -152,4 +152,3 @@ export const OFERTAS: Record<PerfilKey, Oferta> = {
       "Oi Anderson, tenho uma agência e quero implementar a parceria de R$ 149,90/mês por cliente.",
   },
 };
-}
