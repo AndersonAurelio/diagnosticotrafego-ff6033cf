@@ -294,7 +294,7 @@ export function Diagnostico() {
                 <span className="font-mono opacity-80">→</span>
               </button>
               <p className="font-mono mt-4 text-center text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                sem spam · só o resultado + material
+                sem spam · só o resultado
               </p>
             </form>
           )}
