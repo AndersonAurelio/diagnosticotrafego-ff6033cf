@@ -238,7 +238,7 @@ export function Diagnostico() {
             <form onSubmit={handleSubmitCaptura} className="pt-2">
               <Kicker label={kickerLabel} step={stepLabel} />
               <h2 className="font-display mt-4 text-3xl font-extrabold leading-tight text-foreground sm:text-4xl">
-                Pra onde eu envio o resultado completo + o material?
+                Pra onde eu envio o resultado completo?
               </h2>
               <p className="mt-3 text-base text-muted-foreground">
                 Seu diagnóstico já está calculado.
@@ -294,7 +294,7 @@ export function Diagnostico() {
                 <span className="font-mono opacity-80">→</span>
               </button>
               <p className="font-mono mt-4 text-center text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                sem spam · só o resultado + material
+                sem spam · só o resultado
               </p>
             </form>
           )}
