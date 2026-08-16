@@ -14,6 +14,7 @@ import {
 } from "./data";
 
 import { formatBRPhone, isValidBRPhone, onlyDigits } from "@/lib/whatsapp-mask";
+import { trackMetaPixelEvent } from "@/lib/meta-pixel";
 
 type Step = "hero" | "q1" | "q2" | "q3" | "q4" | "captura" | "resultado";
 
@@ -82,6 +83,15 @@ export function Diagnostico() {
       origem_url: window.location.href,
     };
   }, []);
+
+  const leadEventFiredRef = useRef(false);
+
+  useEffect(() => {
+    if (step !== "resultado") return;
+    if (leadEventFiredRef.current) return;
+    leadEventFiredRef.current = true;
+    trackMetaPixelEvent("Lead");
+  }, [step]);
 
   const questionIndex = QUESTION_STEPS.indexOf(step);
   const showProgress = questionIndex >= 0;
